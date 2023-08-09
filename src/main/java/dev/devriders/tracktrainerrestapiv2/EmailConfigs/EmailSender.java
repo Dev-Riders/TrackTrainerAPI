@@ -45,7 +45,7 @@ public class EmailSender {
             String htmlMsg = "<h3>¡Hola, " + usuario.getNombre() + " " + usuario.getApellido() + "!</h3>"
                     + "<p>Hemos recibido una solicitud para restablecer tu contraseña en Track Trainer.</p>"
                     + "<p>Por favor, utiliza el siguiente código para restablecer tu contraseña:</p>"
-                    + "<h2>" + usuario.getVerificationCode() + "</h2>"
+                    + "<h2>" + usuario.getResetCode() + "</h2>"
                     + "<p>Si tú no solicitaste el restablecimiento de tu contraseña, por favor ignora este correo electrónico o avísanos inmediatamente.</p>"
                     + "<p>Gracias,</p>"
                     + "<p>Equipo de Track Trainer</p>";

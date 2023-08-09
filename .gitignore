@@ -25,5 +25,7 @@ src/main/resources/application.properties
 *.zip
 *.tar.gz
 *.rar
+target
+out
 
 workspace.xml
