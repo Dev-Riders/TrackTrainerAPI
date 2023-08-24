@@ -44,12 +44,6 @@ public class UsuarioController {
     }
     @PostMapping("/register")
     public ResponseEntity<String> saveUsuario(@RequestBody UsuarioModel usuario) {
-        // Verificar si ya existe un usuario con el mismo correo electrónico
-        // Optional<UsuarioModel> existingUsuarioOptional = usuarioRepository.findByCorreo(usuario.getCorreo());
-        //if (existingUsuarioOptional.isPresent()) {
-           // return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El correo electrónico ya está registrado");
-       // }
-
         String verificationCode = RandomCodeGenerator.generateRandomCode();
         usuario.setVerificationCode(verificationCode);
         usuario.setContraseña(passwordEncoder.encode(usuario.getContraseña()));
