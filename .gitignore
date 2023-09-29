@@ -27,5 +27,10 @@ application.properties
 *.rar
 target
 out
+/out
+/target
+/target/*
+/out/*
+*application.properties
 
 workspace.xml
