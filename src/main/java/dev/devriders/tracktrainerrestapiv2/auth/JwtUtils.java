@@ -1,19 +1,13 @@
 package dev.devriders.tracktrainerrestapiv2.auth;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.JwtException;
 
 @Component
 public class JwtUtils {
@@ -32,13 +26,14 @@ public class JwtUtils {
                 .setSubject(subject)
                 .setIssuedAt(issuedAt)
                 .setExpiration(expirationDate)
-                .signWith(Keys.hmacShaKeyFor(secretKey))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
     public String extractSubject(String token) {
         try {
-            Claims claims = Jwts.parser()
+            Claims claims = Jwts.parserBuilder()
                     .setSigningKey(secretKey)
+                    .build()
                     .parseClaimsJws(token)
                     .getBody();
             return claims.getSubject();
@@ -55,7 +50,7 @@ public class JwtUtils {
     public boolean validateToken(String token) {
         try {
             Jws<Claims> claimsJws = Jwts.parserBuilder()
-                    .setSigningKey(Keys.hmacShaKeyFor(secretKey))
+                    .setSigningKey(secretKey)
                     .build()
                     .parseClaimsJws(token);
             return !claimsJws.getBody().getExpiration().before(new Date());

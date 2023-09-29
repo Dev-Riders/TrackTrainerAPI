@@ -1,6 +1,8 @@
 package dev.devriders.tracktrainerrestapiv2.controllers;
 
-import dev.devriders.tracktrainerrestapiv2.models.*;
+import dev.devriders.tracktrainerrestapiv2.models.ErrorResponse;
+import dev.devriders.tracktrainerrestapiv2.models.LogroModel;
+import dev.devriders.tracktrainerrestapiv2.models.UsuarioModel;
 import dev.devriders.tracktrainerrestapiv2.repositories.ILogroRepository;
 import dev.devriders.tracktrainerrestapiv2.repositories.IUsuarioRepository;
 import dev.devriders.tracktrainerrestapiv2.services.LogroService;

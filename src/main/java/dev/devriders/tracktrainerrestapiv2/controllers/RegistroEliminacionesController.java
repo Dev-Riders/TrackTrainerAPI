@@ -2,7 +2,8 @@ package dev.devriders.tracktrainerrestapiv2.controllers;
 
 import dev.devriders.tracktrainerrestapiv2.repositories.IRegistroEliminacionesRepository;
 import dev.devriders.tracktrainerrestapiv2.services.RegistroEliminacionesService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController

@@ -1,6 +1,7 @@
 package dev.devriders.tracktrainerrestapiv2.models;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -60,7 +61,15 @@ public class UsuarioModel {
             joinColumns = { @JoinColumn(name = "id_usuario") },
             inverseJoinColumns = { @JoinColumn(name = "id_mision") })
     private Set<MisionModel> misiones = new HashSet<>();
-
+    /*@ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(name = "ejercicio_user",
+            joinColumns = { @JoinColumn(name = "id_usuario") },
+            inverseJoinColumns = { @JoinColumn(name = "id_ejercicio") })
+    private Set<EjercicioModel> ejercicio = new HashSet<>();*/
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,

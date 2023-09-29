@@ -16,7 +16,7 @@ public class LogroModel {
     private Long idlogro;
     @Column(name = "nombre_logro")
     private String nombreLogro;
-    @Column(name = "Descripcion_Logro")
+    @Column(name = "descripcion_Logro")
     private String descripcionLogro;
 
     //Declaracion many to many

@@ -1,8 +1,8 @@
 package dev.devriders.tracktrainerrestapiv2.controllers;
 
+import dev.devriders.tracktrainerrestapiv2.EmailConfigs.EmailSender;
 import dev.devriders.tracktrainerrestapiv2.auth.JwtUtils;
 import dev.devriders.tracktrainerrestapiv2.auth.PasswordEncoder;
-import dev.devriders.tracktrainerrestapiv2.EmailConfigs.EmailSender;
 import dev.devriders.tracktrainerrestapiv2.models.InfoUsuarioModel;
 import dev.devriders.tracktrainerrestapiv2.models.UsuarioModel;
 import dev.devriders.tracktrainerrestapiv2.repositories.IUsuarioRepository;

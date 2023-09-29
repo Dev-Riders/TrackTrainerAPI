@@ -1,7 +1,6 @@
 package dev.devriders.tracktrainerrestapiv2.controllers;
 
 import dev.devriders.tracktrainerrestapiv2.models.InfoUsuarioModel;
-import dev.devriders.tracktrainerrestapiv2.models.RutinaModel;
 import dev.devriders.tracktrainerrestapiv2.models.UsuarioModel;
 import dev.devriders.tracktrainerrestapiv2.services.InfoUsuarioService;
 import dev.devriders.tracktrainerrestapiv2.services.UsuarioService;
@@ -9,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Optional;
 

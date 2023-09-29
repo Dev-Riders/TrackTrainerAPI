@@ -1,10 +1,10 @@
 package dev.devriders.tracktrainerrestapiv2.services;
 
 import dev.devriders.tracktrainerrestapiv2.models.InfoUsuarioModel;
-import dev.devriders.tracktrainerrestapiv2.models.RutinaModel;
 import dev.devriders.tracktrainerrestapiv2.repositories.IInfoUsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 

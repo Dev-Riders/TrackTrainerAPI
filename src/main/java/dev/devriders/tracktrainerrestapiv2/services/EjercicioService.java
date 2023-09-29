@@ -10,28 +10,34 @@ import java.util.Optional;
 
 @Service
 public class EjercicioService {
+
     @Autowired
     IEjercicioRepository ejercicioRepository;
-    public ArrayList<EjercicioModel> getEjercicio() {
+
+    public ArrayList<EjercicioModel> getEjercios(){
         return (ArrayList<EjercicioModel>) ejercicioRepository.findAll();
     }
-    public EjercicioModel saveEjercicio(EjercicioModel ejercicio) {
+
+    public EjercicioModel saveEjercicio (EjercicioModel ejercicio){
         return ejercicioRepository.save(ejercicio);
     }
-    public Optional<EjercicioModel> getById(Long id) {
+
+    public Optional<EjercicioModel> getById(Long id){
         return ejercicioRepository.findById(id);
     }
-    public EjercicioModel updateById(EjercicioModel Request, Long id) {
+
+    public EjercicioModel updateById(EjercicioModel request, Long id){
         EjercicioModel ejercicio = ejercicioRepository.findById(id).get();
-        ejercicio.setNombreEjercicio(Request.getNombreEjercicio());
-        ejercicio.setTipoEjercicio(Request.getTipoEjercicio());
+
+        ejercicio.setNombre_ejercicio(request.getNombre_ejercicio());
+        ejercicio.setTipo_ejercicio(request.getTipo_ejercicio());
         return ejercicio;
     }
-    public Boolean deleteEjercicio (Long id){
+    public Boolean deleteEjercicio(Long id){
         try{
             ejercicioRepository.deleteById(id);
             return true;
-        }catch (Exception e){
+        }catch(Exception e){
             return false;
         }
     }

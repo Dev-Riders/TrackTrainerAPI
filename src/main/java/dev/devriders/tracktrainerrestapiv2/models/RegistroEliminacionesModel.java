@@ -1,6 +1,7 @@
 package dev.devriders.tracktrainerrestapiv2.models;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Entity
