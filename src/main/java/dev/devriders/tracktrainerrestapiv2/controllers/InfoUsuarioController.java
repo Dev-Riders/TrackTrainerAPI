@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,5 +47,9 @@ public class InfoUsuarioController {
     @GetMapping(path = "/info/{id}")
     public Optional<InfoUsuarioModel> getInfoUsuarioById(@PathVariable("id") Long id){
         return this.infoUsuarioService.getById(id);
+    }
+    @GetMapping(path = "/imc/{id}")
+    public Float getImc(@PathVariable("id") Long id){
+        return this.infoUsuarioService.IMC(id);
     }
 }
