@@ -15,6 +15,7 @@ public class EjexuserController {
     @Autowired
     private EjexuserService ejexuserService;
 
+
     @GetMapping(path = "/getAll")
     public ArrayList<EjexuserModel> getEjexusers(){
         return this.ejexuserService.getEjexusers();
@@ -25,9 +26,15 @@ public class EjexuserController {
         return this.ejexuserService.saveEjexuser(ejexuser);
     }
 
+
     @GetMapping(path = "/getById/{id}")
     public Optional<EjexuserModel> getEjexuserById (@PathVariable ("id") Long id){
         return this.ejexuserService.getById(id);
+    }
+
+    @GetMapping(path = "/getByUserId/{id}")
+    public Optional<ArrayList<EjexuserModel>> getEjexuserByUserId (@PathVariable ("id") Long id){
+        return this.ejexuserService.getByUserId(id);
     }
 
     @PutMapping(path = "/update/{id}")

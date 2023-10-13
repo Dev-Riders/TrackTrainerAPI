@@ -16,7 +16,7 @@ public class EjexuserModel {
     private Long id_ejercicio;
 
     @Column(name = "id_usuario")
-    private Long id_usuario;
+    private Long idusuario;
 
     @Column(name = "cantidad")
     private Integer cantidad;
@@ -30,10 +30,10 @@ public class EjexuserModel {
     public EjexuserModel() {
 
     }
-    public EjexuserModel(Long id_ejexuser, Long id_ejercicio, Long id_usuario, Integer cantidad, Integer tiempo, Integer peso) {
+    public EjexuserModel(Long id_ejexuser, Long id_ejercicio, Long idusuario, Integer cantidad, Integer tiempo, Integer peso) {
         this.id_ejexuser = id_ejexuser;
         this.id_ejercicio = id_ejercicio;
-        this.id_usuario = id_usuario;
+        this.idusuario = idusuario;
         this.cantidad = cantidad;
         this.tiempo = tiempo;
         this.peso = peso;
@@ -56,11 +56,11 @@ public class EjexuserModel {
     }
 
     public Long getId_usuario() {
-        return id_usuario;
+        return idusuario;
     }
 
     public void setId_usuario(Long id_usuario) {
-        this.id_usuario = id_usuario;
+        this.idusuario = id_usuario;
     }
 
     public Integer getCantidad() {

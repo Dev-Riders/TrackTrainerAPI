@@ -1,6 +1,5 @@
 package dev.devriders.tracktrainerrestapiv2.services;
 
-import dev.devriders.tracktrainerrestapiv2.controllers.EjexuserController;
 import dev.devriders.tracktrainerrestapiv2.models.EjexuserModel;
 import dev.devriders.tracktrainerrestapiv2.repositories.IEjexuserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +26,10 @@ public class EjexuserService {
         return ejexuserRepository.findById(id);
     }
 
+    public Optional<ArrayList<EjexuserModel>> getByUserId(Long id){
+        return ejexuserRepository.findByIdusuario(id);
+
+    }
     public EjexuserModel updateById(EjexuserModel request, Long id){
         EjexuserModel ejexuser = ejexuserRepository.findById(id).get();
         ejexuser.setId_usuario(request.getId_usuario());
