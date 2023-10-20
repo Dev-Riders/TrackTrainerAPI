@@ -31,6 +31,9 @@ public class EjercicioService {
 
         ejercicio.setNombre_ejercicio(request.getNombre_ejercicio());
         ejercicio.setTipo_ejercicio(request.getTipo_ejercicio());
+        ejercicio.setImagen_ejercicio(request.getImagen_ejercicio());
+        ejercicio.setVideo_ejercicio(request.getVideo_ejercicio());
+        ejercicio.setDescripcion_ejercicio(request.getDescripcion_ejercicio());
         return ejercicio;
     }
     public Boolean deleteEjercicio(Long id){

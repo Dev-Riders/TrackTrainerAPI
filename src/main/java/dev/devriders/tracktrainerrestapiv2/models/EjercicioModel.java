@@ -28,13 +28,28 @@ public class EjercicioModel {
           mappedBy = "ejercicios")
   @JsonIgnore
   private Set<CategoriaModel> categorias = new HashSet<>();
+
+
+
+  @Column(name = "imagen_ejercicio")
+  private String imagen_ejercicio;
+
+  @Column(name = "video_ejercicio")
+  private String video_ejercicio;
+
+  @Column(name = "descripcion_ejercicio")
+  private String descripcion_ejercicio;
+
   public EjercicioModel() {
 
   }
 
-  public EjercicioModel(Long id_ejercicio, String nombre_ejercicio, String tipo_ejercicio) {
+  public EjercicioModel(Long id_ejercicio, String nombre_ejercicio, String tipo_ejercicio, String imagen_ejercicio, String video_ejercicio, String descripcion_ejercicio) {
     this.idejercicio = id_ejercicio;
     this.nombre_ejercicio = nombre_ejercicio;
+    this.imagen_ejercicio = imagen_ejercicio;
+    this.video_ejercicio = video_ejercicio;
+    this.descripcion_ejercicio = descripcion_ejercicio;
     this.tipo_ejercicio = tipo_ejercicio;
   }
 
@@ -64,5 +79,29 @@ public class EjercicioModel {
   //Declaraciones funciones many to many
   public Set<CategoriaModel> getCategorias() {
     return categorias;
+  }
+
+  public String getDescripcion_ejercicio() {
+    return descripcion_ejercicio;
+  }
+
+  public void setDescripcion_ejercicio(String descripcion_ejercicio) {
+    this.descripcion_ejercicio = descripcion_ejercicio;
+  }
+
+  public String getImagen_ejercicio() {
+    return imagen_ejercicio;
+  }
+
+  public void setImagen_ejercicio(String imagen_ejercicio) {
+    this.imagen_ejercicio = imagen_ejercicio;
+  }
+
+  public String getVideo_ejercicio() {
+    return video_ejercicio;
+  }
+
+  public void setVideo_ejercicio(String video_ejercicio) {
+    this.video_ejercicio = video_ejercicio;
   }
 }
