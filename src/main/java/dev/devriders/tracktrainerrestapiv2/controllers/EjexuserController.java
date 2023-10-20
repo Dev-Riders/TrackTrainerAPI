@@ -19,23 +19,23 @@ public class EjexuserController {
         this.ejexuserService = ejexuserService;
     }
 
-    @GetMapping(path = "/getAll")
+    @GetMapping(path = "/get-all")
     public ArrayList<EjexuserModel> getEjexusers(){
         return this.ejexuserService.getEjexusers();
     }
 
-    @PostMapping(path = "/saveEjexuser")
+    @PostMapping(path = "/save-ejexuser")
     public EjexuserModel saveEjexuser(@RequestBody EjexuserModel ejexuser){
         return this.ejexuserService.saveEjexuser(ejexuser);
     }
 
 
-    @GetMapping(path = "/getById/{id}")
+    @GetMapping(path = "/get-by-id/{id}")
     public Optional<EjexuserModel> getEjexuserById (@PathVariable ("id") Long id){
         return this.ejexuserService.getById(id);
     }
 
-    @GetMapping(path = "/getByUserId/{id}")
+    @GetMapping(path = "/get-by-user-id/{id}")
     public Optional<ArrayList<EjexuserModel>> getEjexuserByUserId (@PathVariable ("id") Long id){
         return this.ejexuserService.getByUserId(id);
     }

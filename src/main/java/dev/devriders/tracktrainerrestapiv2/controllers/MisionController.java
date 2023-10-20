@@ -43,15 +43,15 @@ public class MisionController {
     public MisionModel saveMision(@RequestBody MisionModel mision){
         return this.misionService.saveMision(mision);
     }
-    @GetMapping(path = "/findbyid/{id}")
+    @GetMapping(path = "/find-by-id/{id}")
     public Optional<MisionModel> getMisionById(@PathVariable("id") Long id){
         return this.misionService.getById(id);
     }
-    @PutMapping(path = "/updatebyid/{id}")
+    @PutMapping(path = "/update-by-id/{id}")
     public MisionModel updateMisionById(@RequestBody MisionModel Request,@PathVariable ("id") Long id){
         return this.misionService.updateById(Request, id);
     }
-    @DeleteMapping(path = "/deletebyid/{id}")
+    @DeleteMapping(path = "/deleteby-id/{id}")
     public String deleteById(@PathVariable ("id") Long id){
         boolean ok = this.misionService.deleteMision(id);
         if(ok){
@@ -62,7 +62,7 @@ public class MisionController {
     }
 
     //Inicio controlador many to many
-    @GetMapping("/usuario/{Idusuario}/getmisionbyidusuario")
+    @GetMapping("/usuario/{Idusuario}/getmision-by-id-usuario")
     public ResponseEntity<List<MisionModel>> getAllMisionesByIdusuario(@PathVariable(value = "Idusuario") Long Idusuario) {
         if (!usuarioRepository.existsById(Idusuario)) {
             new ErrorResponse("Not found usuario with id = " + Idusuario);
@@ -74,7 +74,7 @@ public class MisionController {
 
 
 
-    @GetMapping("/{Idmision}/getusuariobyidmision")
+    @GetMapping("/{Idmision}/get-usuario-by-id-mision")
     public ResponseEntity<List<UsuarioModel>> getAllUsuariosByIdmision(@PathVariable(value = "Idmision") Long Idmision) {
         if (!misionRepository.existsById(Idmision)) {
             new ErrorResponse("Not found mision with id = " + Idmision);
@@ -84,7 +84,7 @@ public class MisionController {
         return new ResponseEntity<>(Usuarios, HttpStatus.OK);
     }
 
-    @PostMapping("/usuario/{Idusuario}/addmision/{Idmision}")
+    @PostMapping("/usuario/{Idusuario}/add-mision/{Idmision}")
     public ResponseEntity<MisionModel> addMision(@PathVariable(value = "Idusuario") Long Idusuario,@PathVariable(value = "Idmision") Long Idmision, @RequestBody MisionModel misionRequest) {
         MisionModel mision = usuarioRepository.findById(Idusuario).map(usuario -> {
             //long Idejercicio = ejercicioRequest.getIdejercicio();
@@ -107,7 +107,7 @@ public class MisionController {
     }
 
 
-    @DeleteMapping("/usuario/{Idusuario}/deletemisionfromusuario/{Idmision}")
+    @DeleteMapping("/usuario/{Idusuario}/delete-mision-from-usuario/{Idmision}")
     public ResponseEntity<HttpStatus> deleteMisionFromUsuario(@PathVariable(value = "Idusuario") Long Idusuario, @PathVariable(value = "Idmision") Long Idmision) {
         UsuarioModel usuario = usuarioRepository.findById(Idusuario)
                 .orElseThrow();

@@ -31,6 +31,7 @@ public class EjercicioController {
     @Autowired
     private IEjercicioRepository ejercicioRepository;
 
+
     public EjercicioController(EjercicioService ejercicioService,
                                ICategoriaRepository categoriaRepository,
                                IEjercicioRepository ejercicioRepository) {
@@ -39,27 +40,29 @@ public class EjercicioController {
         this.ejercicioRepository = ejercicioRepository;
     }
 
-    @GetMapping(path = "/findAllEjercicios")
+
+    @GetMapping(path = "/find-all-ejercicios")
+
     public ArrayList<EjercicioModel> getEjercicios(){
         return this.ejercicioService.getEjercios();
     }
 
-    @PostMapping(path = "/saveEjercicio")
+    @PostMapping(path = "/save-ejercicio")
     public EjercicioModel saveEjercicio(@RequestBody EjercicioModel ejercicio){
         return this.ejercicioService.saveEjercicio(ejercicio);
     }
 
-    @GetMapping(path = "/{id}/idEjercicio")
+    @GetMapping(path = "/{id}/idE-ejercicio")
     public Optional<EjercicioModel> getEjercicioById(@PathVariable("id") Long id){
         return this.ejercicioService.getById(id);
     }
 
-    @PutMapping(path = "/{id}/updateEjercicioById")
+    @PutMapping(path = "/{id}/update-ejercicio-by-id")
     public EjercicioModel updateEjercicioById(@RequestBody EjercicioModel  Request,@PathVariable ("id") Long id){
         return this.ejercicioService.updateById(Request, id);
     }
 
-    @DeleteMapping(path = "/{id}/deleteEjercicioById")
+    @DeleteMapping(path = "/{id}/delete-ejercicio-by-id")
     public String deleteEjercicioById(@PathVariable("id") Long id){
         boolean ok = this.ejercicioService.deleteEjercicio(id);
         if(ok){
@@ -77,7 +80,7 @@ public class EjercicioController {
         List<EjercicioModel> ejercicios = ejercicioRepository.findEjerciciosByCategoriasIdcategoria(categoriaId);
         return new ResponseEntity<>(ejercicios, HttpStatus.OK);
     }
-    @GetMapping("/{ejercicioId}/Categorias")
+    @GetMapping("/{ejercicioId}/categorias")
     public ResponseEntity<List<CategoriaModel>> getAllCategoriasByEjercicioId(@PathVariable(value = "ejercicioId") Long ejercicioId) {
         if (!ejercicioRepository.existsById(ejercicioId)) {
             new ErrorResponse("Not found ejercicio with id = " + ejercicioId);
