@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/infousuarios")
+@RequestMapping("/api/info-usuarios")
 public class InfoUsuarioController {
 
     private final InfoUsuarioService infoUsuarioService;
