@@ -21,7 +21,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/ejercicios")
 public class EjercicioController {
 
     @Autowired
@@ -45,7 +45,7 @@ public class EjercicioController {
         return this.ejercicioService.getById(id);
     }
 
-    @PutMapping(path = "/{id}/UpdateEjercicioById")
+    @PutMapping(path = "/{id}/updateEjercicioById")
     public EjercicioModel updateEjercicioById(@RequestBody EjercicioModel  Request,@PathVariable ("id") Long id){
         return this.ejercicioService.updateById(Request, id);
     }
@@ -68,7 +68,7 @@ public class EjercicioController {
         List<EjercicioModel> ejercicios = ejercicioRepository.findEjerciciosByCategoriasIdcategoria(categoriaId);
         return new ResponseEntity<>(ejercicios, HttpStatus.OK);
     }
-    @GetMapping("/ejercicio/{ejercicioId}/Categorias")
+    @GetMapping("/{ejercicioId}/Categorias")
     public ResponseEntity<List<CategoriaModel>> getAllCategoriasByEjercicioId(@PathVariable(value = "ejercicioId") Long ejercicioId) {
         if (!ejercicioRepository.existsById(ejercicioId)) {
             new ErrorResponse("Not found ejercicio with id = " + ejercicioId);
@@ -108,7 +108,7 @@ public class EjercicioController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    @DeleteMapping("/ejercicios/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<HttpStatus> deleteTag(@PathVariable("id") long id) {
         ejercicioRepository.deleteById(id);
 

@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/logro")
 public class LogroController {
     @Autowired
     private LogroService logroService;
@@ -26,23 +26,23 @@ public class LogroController {
 
     @Autowired
     private IUsuarioRepository usuarioRepository;
-    @GetMapping("/logro/listar")
+    @GetMapping("/listar")
     public ArrayList<LogroModel> getLogro(){
         return this.logroService.getLogro();
     }
-    @PostMapping(path ="/logro/guardar")
+    @PostMapping(path ="/guardar")
     public LogroModel saveLogro(@RequestBody LogroModel logro){
         return this.logroService.saveLogro(logro);
     }
-    @GetMapping(path = "/logro/{id}")
+    @GetMapping(path = "/findbyid/{id}")
     public Optional<LogroModel> getLogroById(@PathVariable("id") Long id){
         return this.logroService.getById(id);
     }
-    @PutMapping(path = "/logro/{id}")
+    @PutMapping(path = "/updatebyid/{id}")
     public LogroModel updatelogroById(@RequestBody LogroModel Request,@PathVariable ("id") Long id){
         return this.logroService.updateById(Request, id);
     }
-    @DeleteMapping(path = "/logro/{id}")
+    @DeleteMapping(path = "/deletebyid/{id}")
     public String deleteById(@PathVariable ("id") Long id){
         boolean ok = this.logroService.deleteLogro(id);
         if(ok){
@@ -53,7 +53,7 @@ public class LogroController {
     }
 
     //Inicio controlador many to many
-    @GetMapping("/logro/usuario/{Idusuario}/logro1")
+    @GetMapping("/usuario/{Idusuario}/getlogrobyidusuario")
     public ResponseEntity<List<LogroModel>> getAllLogrosByIdusuario(@PathVariable(value = "Idusuario") Long Idusuario) {
         if (!usuarioRepository.existsById(Idusuario)) {
             new ErrorResponse("Not found Usuario with id = " + Idusuario);
@@ -65,7 +65,7 @@ public class LogroController {
 
 
 
-    @GetMapping("/logro/{Idlogro}/usuario")
+    @GetMapping("/{Idlogro}/getusuariobyidlogro")
     public ResponseEntity<List<UsuarioModel>> getAllUsuariosByIdlogro(@PathVariable(value = "Idlogro") Long Idlogro) {
         if (!logroRepository.existsById(Idlogro)) {
             new ErrorResponse("Not found Logro with id = " + Idlogro);
@@ -75,7 +75,7 @@ public class LogroController {
         return new ResponseEntity<>(usuario, HttpStatus.OK);
     }
 
-    @PostMapping("/logro/usuario/{Idusuario}/logro2/{Idlogro}")
+    @PostMapping("/usuario/{Idusuario}/addlogro/{Idlogro}")
     public ResponseEntity<LogroModel> addLogro(@PathVariable(value = "Idusuario") Long Idusuario,@PathVariable(value = "Idlogro") Long Idlogro, @RequestBody LogroModel logroRequest) {
         LogroModel logro = usuarioRepository.findById(Idusuario).map(usuario -> {
             //long Idejercicio = ejercicioRequest.getIdejercicio();
@@ -98,7 +98,7 @@ public class LogroController {
     }
 
 
-    @DeleteMapping("/logro/usuario/{Idusuario}/logro/{Idlogro}")
+    @DeleteMapping("/usuario/{Idusuario}/deletelogrofromusuario/{Idlogro}")
     public ResponseEntity<HttpStatus> deleteLogroFromUsuario(@PathVariable(value = "Idusuario") Long Idusuario, @PathVariable(value = "Idlogro") Long Idlogro) {
         UsuarioModel usuario = usuarioRepository.findById(Idusuario)
                 .orElseThrow();

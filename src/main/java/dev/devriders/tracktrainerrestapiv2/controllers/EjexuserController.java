@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/ejexuser")
+@RequestMapping("/api/ejexuser")
 public class EjexuserController {
 
     @Autowired

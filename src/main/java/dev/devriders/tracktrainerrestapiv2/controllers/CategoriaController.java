@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Optional;
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/categoria")
 public class CategoriaController {
 
     @Autowired
@@ -29,7 +29,7 @@ public class CategoriaController {
         return this.categoriaService.getById(id);
     }
 
-    @PutMapping(path = "/{id}/UpdateCategoriaById")
+    @PutMapping(path = "/{id}/updateCategoriaById")
     public CategoriaModel updateCategoriaById(@RequestBody CategoriaModel  Request,@PathVariable ("id") Long id){
         return this.categoriaService.updateById(Request, id);
     }
