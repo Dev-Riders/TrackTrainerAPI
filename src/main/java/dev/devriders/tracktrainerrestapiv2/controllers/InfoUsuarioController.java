@@ -20,7 +20,8 @@ public class InfoUsuarioController {
     private final InfoUsuarioService infoUsuarioService;
     private final UsuarioService usuarioService;
     @Autowired
-    public InfoUsuarioController(InfoUsuarioService infoUsuarioService, UsuarioService usuarioService) {
+    public InfoUsuarioController(InfoUsuarioService infoUsuarioService,
+                                 UsuarioService usuarioService) {
         this.infoUsuarioService = infoUsuarioService;
         this.usuarioService = usuarioService;
     }

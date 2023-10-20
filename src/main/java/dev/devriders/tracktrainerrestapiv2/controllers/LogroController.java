@@ -26,6 +26,15 @@ public class LogroController {
 
     @Autowired
     private IUsuarioRepository usuarioRepository;
+
+    public LogroController(LogroService logroService,
+                           ILogroRepository logroRepository,
+                           IUsuarioRepository usuarioRepository) {
+        this.logroService = logroService;
+        this.logroRepository = logroRepository;
+        this.usuarioRepository = usuarioRepository;
+    }
+
     @GetMapping("/listar")
     public ArrayList<LogroModel> getLogro(){
         return this.logroService.getLogro();

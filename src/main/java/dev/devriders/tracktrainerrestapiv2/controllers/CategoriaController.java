@@ -14,6 +14,10 @@ public class CategoriaController {
     @Autowired
     private CategoriaService categoriaService;
 
+    public CategoriaController(CategoriaService categoriaService) {
+        this.categoriaService = categoriaService;
+    }
+
     @GetMapping(path = "/findAllCategorias")
     public ArrayList<CategoriaModel> getCategorias(){
         return this.categoriaService.getCategorias();

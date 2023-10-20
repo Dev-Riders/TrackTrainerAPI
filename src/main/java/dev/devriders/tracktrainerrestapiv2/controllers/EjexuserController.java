@@ -15,6 +15,9 @@ public class EjexuserController {
     @Autowired
     private EjexuserService ejexuserService;
 
+    public EjexuserController(EjexuserService ejexuserService) {
+        this.ejexuserService = ejexuserService;
+    }
 
     @GetMapping(path = "/getAll")
     public ArrayList<EjexuserModel> getEjexusers(){

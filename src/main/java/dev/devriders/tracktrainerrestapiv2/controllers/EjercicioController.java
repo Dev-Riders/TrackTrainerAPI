@@ -30,6 +30,15 @@ public class EjercicioController {
     private ICategoriaRepository categoriaRepository;
     @Autowired
     private IEjercicioRepository ejercicioRepository;
+
+    public EjercicioController(EjercicioService ejercicioService,
+                               ICategoriaRepository categoriaRepository,
+                               IEjercicioRepository ejercicioRepository) {
+        this.ejercicioService = ejercicioService;
+        this.categoriaRepository = categoriaRepository;
+        this.ejercicioRepository = ejercicioRepository;
+    }
+
     @GetMapping(path = "/findAllEjercicios")
     public ArrayList<EjercicioModel> getEjercicios(){
         return this.ejercicioService.getEjercios();

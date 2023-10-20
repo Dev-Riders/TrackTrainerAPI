@@ -26,6 +26,15 @@ public class MisionController {
 
     @Autowired
     private IUsuarioRepository usuarioRepository;
+
+    public MisionController(MisionService misionService,
+                            IMisionRepository misionRepository,
+                            IUsuarioRepository usuarioRepository) {
+        this.misionService = misionService;
+        this.misionRepository = misionRepository;
+        this.usuarioRepository = usuarioRepository;
+    }
+
     @GetMapping("/listar")
     public ArrayList<MisionModel> getMision(){
         return this.misionService.getMision();
