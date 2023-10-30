@@ -19,6 +19,11 @@ public class MisionModel {
     @Column(name = "Descripcion_mision")
     private String descripcionMision;
 
+    @Column(name = "puntaje_mision")
+    private int puntaje;
+
+
+
     //Declaracion many to many
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
@@ -33,10 +38,11 @@ public class MisionModel {
 
     public MisionModel() {
     }
-    public MisionModel(Long idmision, String nombreMision, String descripcionMision) {
+    public MisionModel(Long idmision, String nombreMision, String descripcionMision, int puntaje) {
         this.idmision = idmision;
         this.nombreMision = nombreMision;
         this.descripcionMision = descripcionMision;
+        this.puntaje = puntaje;
     }
 
     public Long getIdmision() {
@@ -62,7 +68,13 @@ public class MisionModel {
     public void setDescripcionMision(String descripcionMision) {
         this.descripcionMision = descripcionMision;
     }
+    public int getPuntaje() {
+        return puntaje;
+    }
 
+    public void setPuntaje(int puntaje) {
+        this.puntaje = puntaje;
+    }
     //Declaraciones funciones many to many
     public Set<UsuarioModel> getUsuarios() {
         return usuarios;
