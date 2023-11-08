@@ -22,6 +22,8 @@ public class MisionModel {
     @Column(name = "puntaje_mision")
     private int puntaje;
 
+    @Column(name = "tipo_mision")
+    private int tipo;
 
 
     //Declaracion many to many
@@ -38,11 +40,20 @@ public class MisionModel {
 
     public MisionModel() {
     }
-    public MisionModel(Long idmision, String nombreMision, String descripcionMision, int puntaje) {
+    public MisionModel(Long idmision, String nombreMision, String descripcionMision, int puntaje, int tipo) {
         this.idmision = idmision;
         this.nombreMision = nombreMision;
         this.descripcionMision = descripcionMision;
         this.puntaje = puntaje;
+        this.tipo = tipo;
+    }
+
+    public int getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
     }
 
     public Long getIdmision() {

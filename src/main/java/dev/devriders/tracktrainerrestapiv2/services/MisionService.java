@@ -26,6 +26,7 @@ public class MisionService {
         mision.setNombreMision(Request.getNombreMision());
         mision.setDescripcionMision(Request.getDescripcionMision());
         mision.setPuntaje(Request.getPuntaje());
+        mision.setTipo(Request.getTipo());
         return mision;
     }
     public Boolean deleteMision (Long id){
