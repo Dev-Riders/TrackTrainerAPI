@@ -30,6 +30,7 @@ public class PuntajeService {
 
         puntaje.setPuntajeHistorico(request.getPuntajeHistorico());
         puntaje.setPuntajeMensual(request.getPuntajeMensual());
+        puntaje.setUsuariosid(request.getUsuariosid());//Borrar
 
         return puntaje;
     }

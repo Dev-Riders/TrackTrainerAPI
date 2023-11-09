@@ -18,13 +18,16 @@ public class PuntajeModel {
     @Column(name = "puntaje_historico")
     private Long puntajeHistorico;
 
+    @Column(name = "usuarios_id")
+    private Long usuariosid;//Borrar
     public PuntajeModel(){
     }
 
-    public PuntajeModel(Long idPuntaje, Long puntajeMensual, Long puntajeHistorico) {
+    public PuntajeModel(Long idPuntaje, Long puntajeMensual, Long puntajeHistorico, Long usuariosid) {
         this.idPuntaje = idPuntaje;
         this.puntajeMensual = puntajeMensual;
         this.puntajeHistorico = puntajeHistorico;
+        this.usuariosid = usuariosid;
     }
 
     public Long getIdPuntaje() {
@@ -49,5 +52,17 @@ public class PuntajeModel {
 
     public void setPuntajeHistorico(Long puntajeHistorico) {
         this.puntajeHistorico = puntajeHistorico;
+    }
+
+
+        //Borrar
+
+
+    public Long getUsuariosid() {
+        return usuariosid;
+    }
+
+    public void setUsuariosid(Long usuariosid) {
+        this.usuariosid = usuariosid;
     }
 }
