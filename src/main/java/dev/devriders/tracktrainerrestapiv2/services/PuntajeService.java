@@ -28,6 +28,7 @@ public class PuntajeService {
     public PuntajeModel updateById (PuntajeModel request, Long id){
         PuntajeModel puntaje = puntajeRepository.findById(id).get();
 
+        //puntaje.setIdPuntaje(id);
         puntaje.setPuntajeHistorico(request.getPuntajeHistorico());
         puntaje.setPuntajeMensual(request.getPuntajeMensual());
         //puntaje.setUsuarios(request.getUsuarios());//Borrar

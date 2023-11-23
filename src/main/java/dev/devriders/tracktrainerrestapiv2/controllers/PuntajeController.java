@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/puntaje")
 public class PuntajeController {
@@ -69,9 +69,31 @@ public class PuntajeController {
         List<PuntajeModel> Puntaje = puntajeRepository.findPuntajesByUsuariosId(Idusuario);
         return new ResponseEntity<>(Puntaje, HttpStatus.OK);
     }
+/*
+    @GetMapping("/{id}/get-puntaje-by-id-usuario")
+    public ResponseEntity<PuntajeModel> getPuntajesByUserId(@PathVariable(value = "id") Long id) {
+        PuntajeModel details = puntajeRepository.findById(id).get();
+
+        return new ResponseEntity<>(details, HttpStatus.OK);
+
+    }*/
+
+    @PostMapping("/{tutorialId}/guardar-puntaje-usuario-1")
+    public ResponseEntity<PuntajeModel> createDetails(@PathVariable(value = "tutorialId") Long tutorialId,
+                                                         @RequestBody PuntajeModel detailsRequest) {
+        UsuarioModel tutorial = usuarioRepository.findById(tutorialId)
+                .orElseThrow();
+        detailsRequest.setIdPuntaje(detailsRequest.getIdPuntaje());
+        detailsRequest.setPuntajeMensual(detailsRequest.getPuntajeMensual());
+        detailsRequest.setPuntajeHistorico(detailsRequest.getPuntajeHistorico());
+        detailsRequest.setUsuarios(tutorial);
+        PuntajeModel details = puntajeRepository.save(detailsRequest);
+
+        return new ResponseEntity<>(details, HttpStatus.CREATED);
+    }
     /*
     @PostMapping("/usuario/{Idusuario}/add-mision/{Idmision}")
-    public ResponseEntity<MisionModel> addMision(@PathVariable(value = "Idusuario") Long Idusuario, @PathVariable(value = "Idmision") Long Idmision, @RequestBody MisionModel misionRequest) {
+    public ResponseEntity<PuntajeModel> addPuntaje(@PathVariable(value = "Idusuario") Long Idusuario, @PathVariable(value = "Idmision") Long Idmision, @RequestBody MisionModel misionRequest) {
         MisionModel mision = usuarioRepository.findById(Idusuario).map(usuario -> {
             //long Idejercicio = ejercicioRequest.getIdejercicio();
 

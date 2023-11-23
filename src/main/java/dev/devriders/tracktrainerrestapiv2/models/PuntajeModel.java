@@ -1,5 +1,6 @@
 package dev.devriders.tracktrainerrestapiv2.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
@@ -18,6 +19,7 @@ public class PuntajeModel {
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "id_usuario")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private UsuarioModel usuarios;//Borrar
 
     public PuntajeModel(){
@@ -57,11 +59,11 @@ public class PuntajeModel {
         //Borrar
 
 
-    /*public UsuarioModel getUsuarios() {
+    public UsuarioModel getUsuarios() {
         return usuarios;
     }
 
     public void setUsuarios(UsuarioModel usuarios) {
         this.usuarios = usuarios;
-    }*/
+    }
 }
