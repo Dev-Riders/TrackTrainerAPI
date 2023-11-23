@@ -66,7 +66,7 @@ public class PuntajeController {
             new ErrorResponse("Not found usuario with id = " + Idusuario);
         }
 
-        List<PuntajeModel> Puntaje = puntajeRepository.findPuntajesByUsuariosid(Idusuario);
+        List<PuntajeModel> Puntaje = puntajeRepository.findPuntajesByUsuariosId(Idusuario);
         return new ResponseEntity<>(Puntaje, HttpStatus.OK);
     }
     /*

@@ -17,17 +17,16 @@ public class PuntajeModel {
 
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
-    @JoinColumn(name = "usuarios_id")
-    private UsuarioModel usuariosid;//Borrar
+    @JoinColumn(name = "id_usuario")
+    private UsuarioModel usuarios;//Borrar
 
     public PuntajeModel(){
     }
 
-    public PuntajeModel(Long idPuntaje, Long puntajeMensual, Long puntajeHistorico , UsuarioModel usuariosid) {
+    public PuntajeModel(Long idPuntaje, Long puntajeMensual, Long puntajeHistorico) {
         this.idPuntaje = idPuntaje;
         this.puntajeMensual = puntajeMensual;
         this.puntajeHistorico = puntajeHistorico;
-        this.usuariosid = usuariosid;
     }
 
     public Long getIdPuntaje() {
@@ -58,11 +57,11 @@ public class PuntajeModel {
         //Borrar
 
 
-    public UsuarioModel getUsuariosid() {
-        return usuariosid;
+    /*public UsuarioModel getUsuarios() {
+        return usuarios;
     }
 
-    public void setUsuariosid(UsuarioModel usuariosid) {
-        this.usuariosid = usuariosid;
-    }
+    public void setUsuarios(UsuarioModel usuarios) {
+        this.usuarios = usuarios;
+    }*/
 }

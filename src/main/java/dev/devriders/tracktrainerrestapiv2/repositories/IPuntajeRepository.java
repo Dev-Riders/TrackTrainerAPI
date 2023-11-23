@@ -9,9 +9,9 @@ import java.util.List;
 
 @Repository
 public interface IPuntajeRepository extends JpaRepository<PuntajeModel, Long> {
-    List<PuntajeModel> findPuntajesByUsuariosid(Long Id);
+    //List<PuntajeModel> findPuntajesByUsuariosid(Long Id);
 
-    static PuntajeModel findPuntajeByUsuariosId(Long id);
+    List<PuntajeModel> findPuntajesByUsuariosId(Long id);
 
 
 }
