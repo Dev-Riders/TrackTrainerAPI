@@ -1,9 +1,6 @@
 package dev.devriders.tracktrainerrestapiv2.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "puntaje")
@@ -18,12 +15,15 @@ public class PuntajeModel {
     @Column(name = "puntaje_historico")
     private Long puntajeHistorico;
 
-    @Column(name = "usuarios_id")
-    private Long usuariosid;//Borrar
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "usuarios_id")
+    private UsuarioModel usuariosid;//Borrar
+
     public PuntajeModel(){
     }
 
-    public PuntajeModel(Long idPuntaje, Long puntajeMensual, Long puntajeHistorico, Long usuariosid) {
+    public PuntajeModel(Long idPuntaje, Long puntajeMensual, Long puntajeHistorico , UsuarioModel usuariosid) {
         this.idPuntaje = idPuntaje;
         this.puntajeMensual = puntajeMensual;
         this.puntajeHistorico = puntajeHistorico;
@@ -58,11 +58,11 @@ public class PuntajeModel {
         //Borrar
 
 
-    public Long getUsuariosid() {
+    public UsuarioModel getUsuariosid() {
         return usuariosid;
     }
 
-    public void setUsuariosid(Long usuariosid) {
+    public void setUsuariosid(UsuarioModel usuariosid) {
         this.usuariosid = usuariosid;
     }
 }
