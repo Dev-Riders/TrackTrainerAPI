@@ -71,7 +71,7 @@ public class EjercicioController {
     }
 
 
-    @GetMapping(path = "/{id}/idE-ejercicio")
+    @GetMapping(path = "/{id}/id-ejercicio")
     public Optional<EjercicioModel> getEjercicioById(@PathVariable("id") Long id) {
         return ejercicioService.getById(id);
     }
