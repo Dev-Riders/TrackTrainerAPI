@@ -12,6 +12,7 @@ import dev.devriders.tracktrainerrestapiv2.repositories.IEjercicioRepository;
 import dev.devriders.tracktrainerrestapiv2.services.EjercicioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -146,7 +147,8 @@ public class EjercicioController {
         byte[] imagen = ejercicioService.getImagenEjercicio(id)
                 .orElseThrow(() -> new RuntimeException("Imagen no encontrada"));
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .ok()
+                .contentType(MediaType.IMAGE_PNG)
                 .body(imagen);
     }
 
@@ -156,6 +158,8 @@ public class EjercicioController {
                 .orElseThrow(() -> new RuntimeException("Video no encontrado"));
         return ResponseEntity
                 .status(HttpStatus.OK)
+                .contentType(MediaType.parseMediaType("video/mp4"))
                 .body(video);
     }
+
 }
