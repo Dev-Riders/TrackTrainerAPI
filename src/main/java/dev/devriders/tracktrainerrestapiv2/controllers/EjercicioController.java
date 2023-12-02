@@ -5,12 +5,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.devriders.tracktrainerrestapiv2.models.CategoriaModel;
 import dev.devriders.tracktrainerrestapiv2.models.EjercicioModel;
-import dev.devriders.tracktrainerrestapiv2.models.ErrorResponse;
-import dev.devriders.tracktrainerrestapiv2.models.MisionModel;
 import dev.devriders.tracktrainerrestapiv2.repositories.ICategoriaRepository;
 import dev.devriders.tracktrainerrestapiv2.repositories.IEjercicioRepository;
 import dev.devriders.tracktrainerrestapiv2.services.EjercicioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +19,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import java.util.List;
 import java.util.Optional;
+
 
 
 @RestController
@@ -36,9 +40,7 @@ public class EjercicioController {
     @Autowired
     private IEjercicioRepository ejercicioRepository;
 
-    public EjercicioController(EjercicioService ejercicioService,
-                               ICategoriaRepository categoriaRepository,
-                               IEjercicioRepository ejercicioRepository) {
+    public EjercicioController(EjercicioService ejercicioService, ICategoriaRepository categoriaRepository, IEjercicioRepository ejercicioRepository) {
         this.ejercicioService = ejercicioService;
         this.categoriaRepository = categoriaRepository;
         this.ejercicioRepository = ejercicioRepository;
@@ -50,9 +52,7 @@ public class EjercicioController {
     }
 
     @PostMapping(path = "/save-ejercicio")
-    public ResponseEntity<?> saveEjercicio(@RequestPart("ejercicio") String ejercicioJson,
-                                           @RequestPart("imagen") MultipartFile imagen,
-                                           @RequestPart("video") MultipartFile video) {
+    public ResponseEntity<?> saveEjercicio(@RequestPart("ejercicio") String ejercicioJson, @RequestPart("imagen") MultipartFile imagen, @RequestPart("video") MultipartFile video) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             EjercicioModel ejercicio = objectMapper.readValue(ejercicioJson, EjercicioModel.class);
@@ -69,7 +69,6 @@ public class EjercicioController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
-
 
     @GetMapping(path = "/{id}/id-ejercicio")
     public Optional<EjercicioModel> getEjercicioById(@PathVariable("id") Long id) {
@@ -142,24 +141,59 @@ public class EjercicioController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping(path = "/{id}/imagen")
-    public ResponseEntity<byte[]> getImagenEjercicio(@PathVariable Long id) {
-        byte[] imagen = ejercicioService.getImagenEjercicio(id)
-                .orElseThrow(() -> new RuntimeException("Imagen no encontrada"));
-        return ResponseEntity
-                .ok()
-                .contentType(MediaType.IMAGE_PNG)
-                .body(imagen);
+    @GetMapping("/{id}/imagen")
+    public ResponseEntity<Resource> getImagenEjercicio(@PathVariable Long id) {
+        EjercicioModel ejercicio = ejercicioService.getById(id)
+                .orElseThrow(() -> new RuntimeException("Ejercicio no encontrado"));
+
+        String rutaImagen = ejercicio.getImagenEjercicio();
+        if (rutaImagen == null || rutaImagen.isEmpty()) {
+            throw new RuntimeException("Imagen no encontrada para el ejercicio");
+        }
+
+        Path path = Paths.get(rutaImagen);
+        Resource resource;
+        try {
+            resource = new UrlResource(path.toUri());
+        } catch (IOException e) {
+            throw new RuntimeException("Error al cargar la imagen");
+        }
+
+        if (resource.exists() && resource.isReadable()) {
+            return ResponseEntity
+                    .ok()
+                    .contentType(MediaType.IMAGE_PNG) // Ajustar según el formato de la imagen
+                    .body(resource);
+        } else {
+            throw new RuntimeException("No se pudo leer el archivo de imagen");
+        }
     }
 
-    @GetMapping(path = "/{id}/video")
-    public ResponseEntity<byte[]> getVideoEjercicio(@PathVariable Long id) {
-        byte[] video = ejercicioService.getVideoEjercicio(id)
-                .orElseThrow(() -> new RuntimeException("Video no encontrado"));
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .contentType(MediaType.parseMediaType("video/mp4"))
-                .body(video);
-    }
+    @GetMapping("/{id}/video")
+    public ResponseEntity<Resource> getVideoEjercicio(@PathVariable Long id) {
+        EjercicioModel ejercicio = ejercicioService.getById(id)
+                .orElseThrow(() -> new RuntimeException("Ejercicio no encontrado"));
 
+        String rutaVideo = ejercicio.getVideoEjercicio();
+        if (rutaVideo == null || rutaVideo.isEmpty()) {
+            throw new RuntimeException("Video no encontrado para el ejercicio");
+        }
+
+        Path path = Paths.get(rutaVideo);
+        Resource resource;
+        try {
+            resource = new UrlResource(path.toUri());
+        } catch (IOException e) {
+            throw new RuntimeException("Error al cargar el video");
+        }
+
+        if (resource.exists() && resource.isReadable()) {
+            return ResponseEntity
+                    .ok()
+                    .contentType(MediaType.parseMediaType("video/mp4")) // Ajustar según el formato del video
+                    .body(resource);
+        } else {
+            throw new RuntimeException("No se pudo leer el archivo de video");
+        }
+    }
 }

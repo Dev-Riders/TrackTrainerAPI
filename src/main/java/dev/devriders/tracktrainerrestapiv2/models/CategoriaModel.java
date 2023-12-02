@@ -36,7 +36,7 @@ public class CategoriaModel {
         ejercicio.getCategorias().add(this);
     }
     public void removeEjercicio(long ejercicioId) {
-        EjercicioModel ejercicio = this.ejercicios.stream().filter(t -> t.getId_ejercicio() == ejercicioId).findFirst().orElse(null);
+        EjercicioModel ejercicio = this.ejercicios.stream().filter(t -> t.getIdEjercicio() == ejercicioId).findFirst().orElse(null);
         if (ejercicio != null) {
             this.ejercicios.remove(ejercicio);
             ejercicio.getCategorias().remove(this);

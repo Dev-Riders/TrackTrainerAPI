@@ -6,7 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -14,7 +18,9 @@ import java.util.Optional;
 public class EjercicioService {
 
     @Autowired
-    IEjercicioRepository ejercicioRepository;
+    private IEjercicioRepository ejercicioRepository;
+
+    private final String uploadDir = "uploads/ejercicios/";
 
     public ArrayList<EjercicioModel> getEjercicios() {
         return (ArrayList<EjercicioModel>) ejercicioRepository.findAll();
@@ -24,11 +30,13 @@ public class EjercicioService {
         try {
             if (imagenFile != null && !imagenFile.isEmpty()) {
                 validateFileSize(imagenFile.getSize());
-                ejercicio.setImagen_ejercicio(imagenFile.getBytes());
+                String imagenPath = storeFile(imagenFile, ejercicio.getNombreEjercicio(), "imagenes");
+                ejercicio.setImagenEjercicio(imagenPath);
             }
             if (videoFile != null && !videoFile.isEmpty()) {
                 validateFileSize(videoFile.getSize());
-                ejercicio.setVideo_ejercicio(videoFile.getBytes());
+                String videoPath = storeFile(videoFile, ejercicio.getNombreEjercicio(), "videos");
+                ejercicio.setVideoEjercicio(videoPath);
             }
         } catch (IOException e) {
             throw new RuntimeException("Error al procesar archivo: " + e.getMessage());
@@ -45,10 +53,9 @@ public class EjercicioService {
                 () -> new RuntimeException("Ejercicio no encontrado")
         );
 
-        ejercicio.setNombre_ejercicio(request.getNombre_ejercicio());
-        ejercicio.setTipo_ejercicio(request.getTipo_ejercicio());
-        ejercicio.setDescripcion_ejercicio(request.getDescripcion_ejercicio());
-        // No actualizar imagen y video aquí
+        ejercicio.setNombreEjercicio(request.getNombreEjercicio());
+        ejercicio.setTipoEjercicio(request.getTipoEjercicio());
+        ejercicio.setDescripcionEjercicio(request.getDescripcionEjercicio());
         return ejercicioRepository.save(ejercicio);
     }
 
@@ -68,11 +75,17 @@ public class EjercicioService {
         }
     }
 
-    public Optional<byte[]> getImagenEjercicio(Long id) {
-        return ejercicioRepository.findById(id).map(EjercicioModel::getImagen_ejercicio);
+    private String storeFile(MultipartFile file, String ejercicioNombre, String subDir) throws IOException {
+        String fileExtension = getFileExtension(file.getOriginalFilename());
+        String filename = ejercicioNombre.replaceAll("\\s+", "_") + fileExtension;
+        Path storagePath = Paths.get(uploadDir + subDir + File.separator + filename);
+        Files.createDirectories(storagePath.getParent());
+        Files.copy(file.getInputStream(), storagePath);
+
+        return storagePath.toString();
     }
 
-    public Optional<byte[]> getVideoEjercicio(Long id) {
-        return ejercicioRepository.findById(id).map(EjercicioModel::getVideo_ejercicio);
+    private String getFileExtension(String fileName) {
+        return fileName.substring(fileName.lastIndexOf("."));
     }
 }

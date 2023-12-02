@@ -17,10 +17,19 @@ public class EjercicioModel {
   private Long idejercicio;
 
   @Column(name = "nombre_ejercicio")
-  private String nombre_ejercicio;
+  private String nombreEjercicio;
 
   @Column(name = "tipo_ejercicio")
-  private String tipo_ejercicio;
+  private String tipoEjercicio;
+
+  @Column(name = "imagen_ejercicio")
+  private String imagenEjercicio; // Almacenar la ruta de la imagen
+
+  @Column(name = "video_ejercicio")
+  private String videoEjercicio; // Almacenar la ruta del video
+
+  @Column(name = "descripcion_ejercicio")
+  private String descripcionEjercicio;
 
   @ManyToMany(fetch = FetchType.LAZY,
           cascade = {
@@ -31,82 +40,74 @@ public class EjercicioModel {
   @JsonIgnore
   private Set<CategoriaModel> categorias = new HashSet<>();
 
-  @Lob
-  @Column(name = "imagen_ejercicio", columnDefinition = "LONGBLOB")
-  private byte[] imagen_ejercicio;
-
-  @Lob
-  @Column(name = "video_ejercicio", columnDefinition = "LONGBLOB")
-  private byte[] video_ejercicio;
-
-  @Column(name = "descripcion_ejercicio")
-  private String descripcion_ejercicio;
-
-  // Constructores, Getters y Setters
+  // Constructores
   public EjercicioModel() {
-
   }
 
-  public EjercicioModel(Long id_ejercicio, String nombre_ejercicio, String tipo_ejercicio, byte[] imagen_ejercicio, byte[] video_ejercicio, String descripcion_ejercicio) {
-    this.idejercicio = id_ejercicio;
-    this.nombre_ejercicio = nombre_ejercicio;
-    this.tipo_ejercicio = tipo_ejercicio;
-    this.imagen_ejercicio = imagen_ejercicio;
-    this.video_ejercicio = video_ejercicio;
-    this.descripcion_ejercicio = descripcion_ejercicio;
+  public EjercicioModel(Long idEjercicio, String nombreEjercicio, String tipoEjercicio, String imagenEjercicio, String videoEjercicio, String descripcionEjercicio) {
+    this.idejercicio = idEjercicio;
+    this.nombreEjercicio = nombreEjercicio;
+    this.tipoEjercicio = tipoEjercicio;
+    this.imagenEjercicio = imagenEjercicio;
+    this.videoEjercicio = videoEjercicio;
+    this.descripcionEjercicio = descripcionEjercicio;
   }
 
-  // Resto de getters y setters
-  public Long getId_ejercicio() {
+  // Getters y setters
+  public Long getIdEjercicio() {
     return idejercicio;
   }
 
-  public void setId_ejercicio(Long id_ejercicio) {
-    this.idejercicio = id_ejercicio;
+  public void setIdEjercicio(Long idEjercicio) {
+    this.idejercicio = idEjercicio;
   }
 
-  public String getNombre_ejercicio() {
-    return nombre_ejercicio;
+  public String getNombreEjercicio() {
+    return nombreEjercicio;
   }
 
-  public void setNombre_ejercicio(String nombre_ejercicio) {
-    this.nombre_ejercicio = nombre_ejercicio;
+  public void setNombreEjercicio(String nombreEjercicio) {
+    this.nombreEjercicio = nombreEjercicio;
   }
 
-  public String getTipo_ejercicio() {
-    return tipo_ejercicio;
+  public String getTipoEjercicio() {
+    return tipoEjercicio;
   }
 
-  public void setTipo_ejercicio(String tipo_ejercicio) {
-    this.tipo_ejercicio = tipo_ejercicio;
+  public void setTipoEjercicio(String tipoEjercicio) {
+    this.tipoEjercicio = tipoEjercicio;
   }
 
-  public byte[] getImagen_ejercicio() {
-    return imagen_ejercicio;
+  public String getImagenEjercicio() {
+    return imagenEjercicio;
   }
 
-  public void setImagen_ejercicio(byte[] imagen_ejercicio) {
-    this.imagen_ejercicio = imagen_ejercicio;
+  public void setImagenEjercicio(String imagenEjercicio) {
+    this.imagenEjercicio = imagenEjercicio;
   }
 
-  public byte[] getVideo_ejercicio() {
-    return video_ejercicio;
+  public String getVideoEjercicio() {
+    return videoEjercicio;
   }
 
-  public void setVideo_ejercicio(byte[] video_ejercicio) {
-    this.video_ejercicio = video_ejercicio;
+  public void setVideoEjercicio(String videoEjercicio) {
+    this.videoEjercicio = videoEjercicio;
   }
 
-  public String getDescripcion_ejercicio() {
-    return descripcion_ejercicio;
+  public String getDescripcionEjercicio() {
+    return descripcionEjercicio;
   }
 
-  public void setDescripcion_ejercicio(String descripcion_ejercicio) {
-    this.descripcion_ejercicio = descripcion_ejercicio;
+  public void setDescripcionEjercicio(String descripcionEjercicio) {
+    this.descripcionEjercicio = descripcionEjercicio;
   }
 
   // Funciones de la relación Many-to-Many
   public Set<CategoriaModel> getCategorias() {
     return categorias;
+  }
+
+  public void setCategorias(Set<CategoriaModel> categorias) {
+    this.categorias = categorias;
   }
 }
