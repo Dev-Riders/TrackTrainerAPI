@@ -75,9 +75,35 @@ public class EjercicioController {
         return ejercicioService.getById(id);
     }
 
-    @PutMapping(path = "/{id}/update-ejercicio-by-id")
-    public EjercicioModel updateEjercicioById(@RequestBody EjercicioModel request, @PathVariable("id") Long id) {
-        return ejercicioService.updateById(request, id);
+    @PostMapping(path = "/{id}/update-ejercicio-by-id", consumes = {"multipart/form-data"})
+    public ResponseEntity<?> updateEjercicioById(
+            @PathVariable("id") Long id,
+            @RequestParam(value = "nombreEjercicio", required = false) String nombreEjercicio,
+            @RequestParam(value = "descripcionEjercicio", required = false) String descripcionEjercicio,
+            @RequestPart(value = "imagen", required = false) MultipartFile imagen,
+            @RequestPart(value = "video", required = false) MultipartFile video) {
+
+        try {
+            EjercicioModel ejercicio = ejercicioService.getById(id)
+                    .orElseThrow(() -> new RuntimeException("Ejercicio no encontrado"));
+
+            if (nombreEjercicio != null && !nombreEjercicio.isEmpty()) {
+                ejercicio.setNombreEjercicio(nombreEjercicio);
+            }
+
+            if (descripcionEjercicio != null && !descripcionEjercicio.isEmpty()) {
+                ejercicio.setDescripcionEjercicio(descripcionEjercicio);
+            }
+
+            MultipartFile imagenFile = (imagen != null && !imagen.isEmpty()) ? imagen : null;
+            MultipartFile videoFile = (video != null && !video.isEmpty()) ? video : null;
+
+            EjercicioModel updatedEjercicio = ejercicioService.saveEjercicio(ejercicio, imagenFile, videoFile);
+            return ResponseEntity.ok(updatedEjercicio);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al actualizar el ejercicio: " + e.getMessage());
+        }
     }
 
     @DeleteMapping(path = "/{id}/delete-ejercicio-by-id")

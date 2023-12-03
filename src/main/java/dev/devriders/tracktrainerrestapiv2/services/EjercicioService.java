@@ -20,7 +20,7 @@ public class EjercicioService {
     @Autowired
     private IEjercicioRepository ejercicioRepository;
 
-    private final String uploadDir = "uploads/ejercicios/";
+    private final String uploadDir = "src/main/resources/static/uploads/ejercicios/";
 
     public ArrayList<EjercicioModel> getEjercicios() {
         return (ArrayList<EjercicioModel>) ejercicioRepository.findAll();
@@ -77,14 +77,48 @@ public class EjercicioService {
     private String storeFile(MultipartFile file, String ejercicioNombre, String subDir) throws IOException {
         String fileExtension = getFileExtension(file.getOriginalFilename());
         String filename = ejercicioNombre.replaceAll("\\s+", "_") + fileExtension;
-        Path storagePath = Paths.get(uploadDir + subDir + File.separator + filename);
-        Files.createDirectories(storagePath.getParent());
-        Files.copy(file.getInputStream(), storagePath);
+        Path fullPath = Paths.get(uploadDir + subDir + File.separator + filename);
+        Files.createDirectories(fullPath.getParent());
+        Files.copy(file.getInputStream(), fullPath);
 
-        return storagePath.toString();
+        return "/uploads/ejercicios/" + subDir + "/" + filename;
     }
 
     private String getFileExtension(String fileName) {
         return fileName.substring(fileName.lastIndexOf("."));
+    }
+
+    public EjercicioModel updateEjercicio(EjercicioModel request, Long id, MultipartFile imagenFile, MultipartFile videoFile) {
+        EjercicioModel ejercicio = getById(id).orElseThrow(
+                () -> new RuntimeException("Ejercicio no encontrado")
+        );
+
+        // Actualización condicional de campos
+        if (request.getNombreEjercicio() != null) {
+            ejercicio.setNombreEjercicio(request.getNombreEjercicio());
+        }
+        if (request.getDescripcionEjercicio() != null) {
+            ejercicio.setDescripcionEjercicio(request.getDescripcionEjercicio());
+        }
+
+        try {
+            // Actualización de imagen si se proporciona una nueva y no existe una previa
+            if (imagenFile != null && !imagenFile.isEmpty() && (ejercicio.getImagenEjercicio() == null || ejercicio.getImagenEjercicio().isEmpty())) {
+                validateFileSize(imagenFile.getSize());
+                String imagenPath = storeFile(imagenFile, ejercicio.getNombreEjercicio(), "imagenes");
+                ejercicio.setImagenEjercicio(imagenPath);
+            }
+
+            // Actualización de video si se proporciona uno nuevo y no existe uno previo
+            if (videoFile != null && !videoFile.isEmpty() && (ejercicio.getVideoEjercicio() == null || ejercicio.getVideoEjercicio().isEmpty())) {
+                validateFileSize(videoFile.getSize());
+                String videoPath = storeFile(videoFile, ejercicio.getNombreEjercicio(), "videos");
+                ejercicio.setVideoEjercicio(videoPath);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Error al procesar archivo: " + e.getMessage());
+        }
+
+        return ejercicioRepository.save(ejercicio);
     }
 }
