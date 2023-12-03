@@ -19,9 +19,6 @@ public class EjercicioModel {
   @Column(name = "nombre_ejercicio")
   private String nombreEjercicio;
 
-  @Column(name = "tipo_ejercicio")
-  private String tipoEjercicio;
-
   @Column(name = "imagen_ejercicio")
   private String imagenEjercicio; // Almacenar la ruta de la imagen
 
@@ -44,10 +41,9 @@ public class EjercicioModel {
   public EjercicioModel() {
   }
 
-  public EjercicioModel(Long idEjercicio, String nombreEjercicio, String tipoEjercicio, String imagenEjercicio, String videoEjercicio, String descripcionEjercicio) {
+  public EjercicioModel(Long idEjercicio, String nombreEjercicio, String imagenEjercicio, String videoEjercicio, String descripcionEjercicio) {
     this.idejercicio = idEjercicio;
     this.nombreEjercicio = nombreEjercicio;
-    this.tipoEjercicio = tipoEjercicio;
     this.imagenEjercicio = imagenEjercicio;
     this.videoEjercicio = videoEjercicio;
     this.descripcionEjercicio = descripcionEjercicio;
@@ -70,13 +66,6 @@ public class EjercicioModel {
     this.nombreEjercicio = nombreEjercicio;
   }
 
-  public String getTipoEjercicio() {
-    return tipoEjercicio;
-  }
-
-  public void setTipoEjercicio(String tipoEjercicio) {
-    this.tipoEjercicio = tipoEjercicio;
-  }
 
   public String getImagenEjercicio() {
     return imagenEjercicio;

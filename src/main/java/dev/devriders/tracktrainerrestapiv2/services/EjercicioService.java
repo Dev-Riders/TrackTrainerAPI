@@ -54,7 +54,6 @@ public class EjercicioService {
         );
 
         ejercicio.setNombreEjercicio(request.getNombreEjercicio());
-        ejercicio.setTipoEjercicio(request.getTipoEjercicio());
         ejercicio.setDescripcionEjercicio(request.getDescripcionEjercicio());
         return ejercicioRepository.save(ejercicio);
     }
