@@ -48,6 +48,7 @@ public class UsuarioModel {
     @ManyToOne
     @JoinColumn(name = "quien_actualizo")
     private AdministradorModel quienActualizo;
+
     public UsuarioModel() {
     }
 
