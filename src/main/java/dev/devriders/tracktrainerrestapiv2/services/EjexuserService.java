@@ -26,14 +26,14 @@ public class EjexuserService {
         return ejexuserRepository.findById(id);
     }
 
-    public Optional<ArrayList<EjexuserModel>> getByUserId(Long id){
+   /* public Optional<ArrayList<EjexuserModel>> getByUserId(Long id){
         return ejexuserRepository.findByIdusuario(id);
 
-    }
+    }*/
     public EjexuserModel updateById(EjexuserModel request, Long id){
         EjexuserModel ejexuser = ejexuserRepository.findById(id).get();
-        ejexuser.setId_usuario(request.getId_usuario());
-        ejexuser.setId_ejercicio(request.getId_ejercicio());
+        //ejexuser.setId_usuario(request.getId_usuario());
+        //ejexuser.setId_ejercicio(request.getId_ejercicio());
         ejexuser.setCantidad(request.getCantidad());
         ejexuser.setTiempo(request.getTiempo());
         ejexuser.setPeso(request.getPeso());

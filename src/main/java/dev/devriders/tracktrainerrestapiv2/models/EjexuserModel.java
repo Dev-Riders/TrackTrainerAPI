@@ -2,7 +2,7 @@ package dev.devriders.tracktrainerrestapiv2.models;
 
 import jakarta.persistence.*;
 
-import java.math.BigInteger;
+
 
 @Entity
 @Table (name = "ejexuser")
@@ -12,11 +12,13 @@ public class EjexuserModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_ejexuser;
 
-    @Column(name = "id_ejercicio")
-    private Long id_ejercicio;
+    @ManyToOne
+    @JoinColumn(name = "id_usuario", nullable = false)
+    private UsuarioModel usuario;
 
-    @Column(name = "id_usuario")
-    private Long idusuario;
+    @ManyToOne
+    @JoinColumn(name = "Id_ejercicio", nullable = false)
+    private EjercicioModel ejercicio;
 
     @Column(name = "cantidad")
     private Integer cantidad;
@@ -30,10 +32,11 @@ public class EjexuserModel {
     public EjexuserModel() {
 
     }
-    public EjexuserModel(Long id_ejexuser, Long id_ejercicio, Long idusuario, Integer cantidad, Integer tiempo, Integer peso) {
+
+    public EjexuserModel(Long id_ejexuser, UsuarioModel usuario, EjercicioModel ejercicio, Integer cantidad, Integer tiempo, Integer peso) {
         this.id_ejexuser = id_ejexuser;
-        this.id_ejercicio = id_ejercicio;
-        this.idusuario = idusuario;
+        this.usuario = usuario;
+        this.ejercicio = ejercicio;
         this.cantidad = cantidad;
         this.tiempo = tiempo;
         this.peso = peso;
@@ -47,20 +50,20 @@ public class EjexuserModel {
         this.id_ejexuser = id_ejexuser;
     }
 
-    public Long getId_ejercicio() {
-        return id_ejercicio;
+    public UsuarioModel getUsuario() {
+        return usuario;
     }
 
-    public void setId_ejercicio(Long id_ejercicio) {
-        this.id_ejercicio = id_ejercicio;
+    public void setUsuario(UsuarioModel usuario) {
+        this.usuario = usuario;
     }
 
-    public Long getId_usuario() {
-        return idusuario;
+    public EjercicioModel getEjercicio() {
+        return ejercicio;
     }
 
-    public void setId_usuario(Long id_usuario) {
-        this.idusuario = id_usuario;
+    public void setEjercicio(EjercicioModel ejercicio) {
+        this.ejercicio = ejercicio;
     }
 
     public Integer getCantidad() {

@@ -1,9 +1,7 @@
 package dev.devriders.tracktrainerrestapiv2.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+
 
 @Entity
 @Table(name= "Amigos")
