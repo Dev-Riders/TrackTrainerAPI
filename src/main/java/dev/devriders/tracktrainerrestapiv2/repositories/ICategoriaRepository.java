@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface ICategoriaRepository extends JpaRepository<CategoriaModel, Long> {
-    List<CategoriaModel> findCategoriasByEjerciciosIdejercicio(Long ejercicioId);
+    CategoriaModel findCategoriasByEjerciciosIdejercicio(Long ejercicioId);
 }

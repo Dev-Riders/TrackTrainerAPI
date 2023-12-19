@@ -123,12 +123,12 @@ public class EjercicioController {
     }
 
     @GetMapping("/{ejercicioId}/categorias")
-    public ResponseEntity<List<CategoriaModel>> getAllCategoriasByEjercicioId(@PathVariable(value = "ejercicioId") Long ejercicioId) {
+    public ResponseEntity<CategoriaModel> getAllCategoriasByEjercicioId(@PathVariable(value = "ejercicioId") Long ejercicioId) {
         if (!ejercicioRepository.existsById(ejercicioId)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        List<CategoriaModel> categorias = categoriaRepository.findCategoriasByEjerciciosIdejercicio(ejercicioId);
+        CategoriaModel categorias = categoriaRepository.findCategoriasByEjerciciosIdejercicio(ejercicioId);
         return new ResponseEntity<>(categorias, HttpStatus.OK);
     }
 
