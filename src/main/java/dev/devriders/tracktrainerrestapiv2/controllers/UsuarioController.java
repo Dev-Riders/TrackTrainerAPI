@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -172,6 +173,14 @@ public class UsuarioController {
         Optional<InfoUsuarioModel> infoUsuarioOptional = infoUsuarioService.getInfoUsuarioById(usuario.getId());
         UsuarioInfoResponse response = new UsuarioInfoResponse(usuario, infoUsuarioOptional.orElse(null));
         return ResponseEntity.ok(response);
+    }
+    @GetMapping("/search/{nickname}")
+    public ResponseEntity<List<UsuarioModel>> buscarPorNickname(@PathVariable String nickname) {
+        List<UsuarioModel> usuarios = usuarioRepository.findByNicknameLike("%" + nickname + "%");
+        if (usuarios.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(usuarios);
     }
 
 

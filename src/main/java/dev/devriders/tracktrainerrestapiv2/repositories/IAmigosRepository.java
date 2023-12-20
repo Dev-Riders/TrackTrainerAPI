@@ -10,5 +10,6 @@ import java.util.List;
 public interface IAmigosRepository extends JpaRepository<AmigosModel, Long> {
 
     List<AmigosModel> findByusuarioId(Long postId);
+    List<AmigosModel> findByAmigoIdAndEstado(Long idAmigo, String estado);
 
 }

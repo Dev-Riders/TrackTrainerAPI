@@ -105,6 +105,40 @@ public class AmigosController {
         return new ResponseEntity<>(amigosRepository.save(amigos), HttpStatus.OK);
     }
 
+    @PostMapping("/enviar-solicitud")
+    public ResponseEntity<AmigosModel> enviarSolicitudAmistad(@RequestBody AmigosModel solicitud) {
+        solicitud.setEstado("pendiente");
+        AmigosModel solicitudGuardada = amigosService.saveAmigo(solicitud);
+        return ResponseEntity.status(HttpStatus.CREATED).body(solicitudGuardada);
+    }
+
+    @PutMapping("/aceptar-solicitud/{id}")
+    public ResponseEntity<AmigosModel> aceptarSolicitud(@PathVariable Long id) {
+        AmigosModel solicitud = amigosRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Solicitud no encontrada"));
+        solicitud.setEstado("aceptado");
+        AmigosModel solicitudActualizada = amigosService.saveAmigo(solicitud);
+        return ResponseEntity.ok(solicitudActualizada);
+    }
+
+    @PutMapping("/rechazar-solicitud/{id}")
+    public ResponseEntity<AmigosModel> rechazarSolicitud(@PathVariable Long id) {
+        AmigosModel solicitud = amigosRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Solicitud no encontrada"));
+        solicitud.setEstado("rechazado");
+        AmigosModel solicitudActualizada = amigosService.saveAmigo(solicitud);
+        return ResponseEntity.ok(solicitudActualizada);
+    }
+    @GetMapping("/solicitudes-pendientes/{idUsuario}")
+    public ResponseEntity<List<AmigosModel>> obtenerSolicitudesPendientes(@PathVariable Long idUsuario) {
+        List<AmigosModel> solicitudesPendientes = amigosRepository.findByAmigoIdAndEstado(idUsuario, "pendiente");
+        if (solicitudesPendientes.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        }
+        return ResponseEntity.ok(solicitudesPendientes);
+    }
+
+
 }
 // request.setUsuario(usuarioRepository.findById(id_usuario).get());
 //        request.setAmigo(usuarioRepository.findById(id_amigo).get());
