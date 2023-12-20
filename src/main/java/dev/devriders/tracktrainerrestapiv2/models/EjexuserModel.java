@@ -24,16 +24,16 @@ public class EjexuserModel {
     private Integer cantidad;
 
     @Column (name = "tiempo")
-    private Integer tiempo;
+    private String tiempo;
 
     @Column (name = "peso")
-    private Integer peso;
+    private float peso;
 
     public EjexuserModel() {
 
     }
 
-    public EjexuserModel(Long id_ejexuser, UsuarioModel usuario, EjercicioModel ejercicio, Integer cantidad, Integer tiempo, Integer peso) {
+    public EjexuserModel(Long id_ejexuser, UsuarioModel usuario, EjercicioModel ejercicio, Integer cantidad, String tiempo, float peso) {
         this.id_ejexuser = id_ejexuser;
         this.usuario = usuario;
         this.ejercicio = ejercicio;
@@ -74,19 +74,19 @@ public class EjexuserModel {
         this.cantidad = cantidad;
     }
 
-    public Integer getTiempo() {
+    public String getTiempo() {
         return tiempo;
     }
 
-    public void setTiempo(Integer tiempo) {
+    public void setTiempo(String tiempo) {
         this.tiempo = tiempo;
     }
 
-    public Integer getPeso() {
+    public float getPeso() {
         return peso;
     }
 
-    public void setPeso(Integer peso) {
+    public void setPeso(float peso) {
         this.peso = peso;
     }
 }
