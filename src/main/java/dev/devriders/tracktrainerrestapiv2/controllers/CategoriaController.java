@@ -1,8 +1,12 @@
 package dev.devriders.tracktrainerrestapiv2.controllers;
 
 import dev.devriders.tracktrainerrestapiv2.models.CategoriaModel;
+import dev.devriders.tracktrainerrestapiv2.repositories.ICategoriaRepository;
+import dev.devriders.tracktrainerrestapiv2.repositories.IEjercicioRepository;
 import dev.devriders.tracktrainerrestapiv2.services.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -13,6 +17,11 @@ public class CategoriaController {
 
     @Autowired
     private CategoriaService categoriaService;
+
+    @Autowired
+    private IEjercicioRepository ejercicioRepository;
+    @Autowired
+    private ICategoriaRepository categoriaRepository;
 
 
     public CategoriaController(CategoriaService categoriaService) {
@@ -49,5 +58,15 @@ public class CategoriaController {
         } else{
             return "Error";
         }
+    }
+
+    @GetMapping("/{ejercicioId}/categorias")
+    public ResponseEntity<CategoriaModel> getAllCategoriasByEjercicioId(@PathVariable(value = "ejercicioId") Long ejercicioId) {
+        if (!ejercicioRepository.existsById(ejercicioId)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        CategoriaModel categorias = categoriaRepository.findCategoriasByEjerciciosIdejercicio(ejercicioId);
+        return new ResponseEntity<>(categorias, HttpStatus.OK);
     }
 }
