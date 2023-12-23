@@ -45,7 +45,7 @@ Para poder ejecutar la aplicación, debes seguir los siguientes pasos:
 
    spring.web.resources.static-locations=classpath:/static/
 
-```
+    ```
 
 Asegúrate de sustituir `"URL_BASE_DATOS"`, `"USERNAME_DB"` y `"PASSWORD_DB"` por los valores correspondientes para tu base de datos, Y `"API_PORT"` por el puerto en el que quieres que se ejecute la API.
 
