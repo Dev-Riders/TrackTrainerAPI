@@ -24,5 +24,9 @@ public interface IUsuarioRepository extends JpaRepository<UsuarioModel, Long> {
     List<UsuarioModel> findUsuarioByMisionesIdmision(Long Id_mision);
 
     List<UsuarioModel> findUsuarioByLogrosIdlogro(Long tagId);
+
+    List<UsuarioModel> findBySuscrito(boolean suscrito);
+
+    long countBySuscrito(boolean suscrito);
     //fin listado
 }

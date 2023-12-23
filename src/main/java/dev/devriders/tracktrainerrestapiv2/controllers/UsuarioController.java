@@ -14,7 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -182,6 +184,27 @@ public class UsuarioController {
         }
         return ResponseEntity.ok(usuarios);
     }
+    @PutMapping("/{id}/suscripcion")
+    public ResponseEntity<String> cambiarEstadoSuscripcion(@PathVariable("id") Long id, @RequestBody boolean suscrito) {
+        Optional<UsuarioModel> usuarioOptional = usuarioService.getById(id);
+        if (usuarioOptional.isPresent()) {
+            UsuarioModel usuario = usuarioOptional.get();
+            usuario.setSuscrito(suscrito);
+            usuarioService.saveUsuario(usuario);
+            return ResponseEntity.ok("Estado de suscripción actualizado");
+        }
+        return ResponseEntity.notFound().build();
+    }
 
+    @GetMapping("/count-subscriptions")
+    public ResponseEntity<Map<String, Long>> countSubscriptions() {
+        long suscritos = usuarioRepository.countBySuscrito(true);
+        long noSuscritos = usuarioRepository.countBySuscrito(false);
 
+        Map<String, Long> counts = new HashMap<>();
+        counts.put("suscritos", suscritos);
+        counts.put("noSuscritos", noSuscritos);
+
+        return ResponseEntity.ok(counts);
+    }
 }

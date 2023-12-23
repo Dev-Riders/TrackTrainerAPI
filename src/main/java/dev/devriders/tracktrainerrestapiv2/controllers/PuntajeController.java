@@ -59,7 +59,6 @@ public class PuntajeController {
         }
     }
 
-    //Trabajo en proceso--------------------------------------------------------------------------------------------------------------
     @GetMapping("/{Idusuario}/get-puntaje-by-id-usuario")
     public ResponseEntity<List<PuntajeModel>> getPuntrajeByIdUsuario(@PathVariable(value = "Idusuario") Long Idusuario) {
         if (!usuarioRepository.existsById(Idusuario)) {
