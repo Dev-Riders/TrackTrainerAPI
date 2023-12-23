@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class RegistroEliminacionesController {
     private final RegistroEliminacionesService registroEliminacionesService;
     private final IRegistroEliminacionesRepository registroEliminacionesRepository;
-    public RegistroEliminacionesController(RegistroEliminacionesService registroEliminacionesService, IRegistroEliminacionesRepository registroEliminacionesRepository) {
+    public RegistroEliminacionesController(RegistroEliminacionesService registroEliminacionesService,
+                                           IRegistroEliminacionesRepository registroEliminacionesRepository) {
         this.registroEliminacionesService = registroEliminacionesService;
         this.registroEliminacionesRepository = registroEliminacionesRepository;
     }

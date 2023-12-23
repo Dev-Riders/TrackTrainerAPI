@@ -32,5 +32,6 @@ out
 /target/*
 /out/*
 *application.properties
-
+/static/*
+/static
 workspace.xml

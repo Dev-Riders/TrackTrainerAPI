@@ -25,6 +25,8 @@ public class MisionService {
         MisionModel mision = misionRepository.findById(id).get();
         mision.setNombreMision(Request.getNombreMision());
         mision.setDescripcionMision(Request.getDescripcionMision());
+        mision.setPuntaje(Request.getPuntaje());
+        mision.setTipo(Request.getTipo());
         return mision;
     }
     public Boolean deleteMision (Long id){

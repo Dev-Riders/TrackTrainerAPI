@@ -15,7 +15,7 @@ public interface IUsuarioRepository extends JpaRepository<UsuarioModel, Long> {
     Optional<UsuarioModel> findByCorreo(String correo);
     Optional<UsuarioModel> findByVerificationCode(String verificationCode);
     Optional<UsuarioModel> findByResetCode(String resetCode);
-
+    List<UsuarioModel> findByNicknameLike(String nickname);
     Page<UsuarioModel> findByCorreoAndNickname(String correo, String nickname, Pageable pageable);
     Page<UsuarioModel> findByCorreo(String correo, Pageable pageable);
     Page<UsuarioModel> findByNickname(String nickname, Pageable pageable);
@@ -24,5 +24,9 @@ public interface IUsuarioRepository extends JpaRepository<UsuarioModel, Long> {
     List<UsuarioModel> findUsuarioByMisionesIdmision(Long Id_mision);
 
     List<UsuarioModel> findUsuarioByLogrosIdlogro(Long tagId);
+
+    List<UsuarioModel> findBySuscrito(boolean suscrito);
+
+    long countBySuscrito(boolean suscrito);
     //fin listado
 }

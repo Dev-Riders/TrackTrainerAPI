@@ -1,51 +1,225 @@
 package dev.devriders.tracktrainerrestapiv2.controllers;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.devriders.tracktrainerrestapiv2.models.CategoriaModel;
 import dev.devriders.tracktrainerrestapiv2.models.EjercicioModel;
+import dev.devriders.tracktrainerrestapiv2.repositories.ICategoriaRepository;
+import dev.devriders.tracktrainerrestapiv2.repositories.IEjercicioRepository;
 import dev.devriders.tracktrainerrestapiv2.services.EjercicioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import java.util.List;
 import java.util.Optional;
 
 
+
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/ejercicios")
 public class EjercicioController {
 
     @Autowired
     private EjercicioService ejercicioService;
+    @Autowired
+    private ICategoriaRepository categoriaRepository;
+    @Autowired
+    private IEjercicioRepository ejercicioRepository;
 
-    @GetMapping(path = "/findAllEjercicios")
-    public ArrayList<EjercicioModel> getEjercicios(){
-        return this.ejercicioService.getEjercios();
+    public EjercicioController(EjercicioService ejercicioService, ICategoriaRepository categoriaRepository, IEjercicioRepository ejercicioRepository) {
+        this.ejercicioService = ejercicioService;
+        this.categoriaRepository = categoriaRepository;
+        this.ejercicioRepository = ejercicioRepository;
     }
 
-    @PostMapping(path = "/saveEjercicio")
-    public EjercicioModel saveEjercicio(@RequestBody EjercicioModel ejercicio){
-        return this.ejercicioService.saveEjercicio(ejercicio);
+    @GetMapping(path = "/find-all-ejercicios")
+    public ArrayList<EjercicioModel> getEjercicios() {
+        return ejercicioService.getEjercicios();
     }
 
-    @GetMapping(path = "/{id}/idEjercicio")
-    public Optional<EjercicioModel> getEjercicioById(@PathVariable("id") Long id){
-        return this.ejercicioService.getById(id);
+    @PostMapping(path = "/save-ejercicio")
+    public ResponseEntity<?> saveEjercicio(@RequestPart("ejercicio") String ejercicioJson, @RequestPart("imagen") MultipartFile imagen, @RequestPart("video") MultipartFile video) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            EjercicioModel ejercicio = objectMapper.readValue(ejercicioJson, EjercicioModel.class);
+            EjercicioModel savedEjercicio = ejercicioService.saveEjercicio(ejercicio, imagen, video);
+            return ResponseEntity.ok(savedEjercicio);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al procesar los datos del ejercicio");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al procesar los archivos");
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
-    @PutMapping(path = "/{id}/UpdateEjercicioById")
-    public EjercicioModel updateEjercicioById(@RequestBody EjercicioModel  Request,@PathVariable ("id") Long id){
-        return this.ejercicioService.updateById(Request, id);
+    @GetMapping(path = "/{id}/id-ejercicio")
+    public Optional<EjercicioModel> getEjercicioById(@PathVariable("id") Long id) {
+        return ejercicioService.getById(id);
     }
 
-    @DeleteMapping(path = "/{id}/deleteEjercicioById")
-    public String deleteEjercicioById(@PathVariable("id") Long id){
-        boolean ok = this.ejercicioService.deleteEjercicio(id);
-        if(ok){
-            return "Ejercicio with id="+id+" got deleted";
-        } else{
-            return "Error";
+    @PostMapping(path = "/{id}/update-ejercicio-by-id", consumes = {"multipart/form-data"})
+    public ResponseEntity<?> updateEjercicioById(
+            @PathVariable("id") Long id,
+            @RequestParam(value = "nombreEjercicio", required = false) String nombreEjercicio,
+            @RequestParam(value = "descripcionEjercicio", required = false) String descripcionEjercicio,
+            @RequestPart(value = "imagen", required = false) MultipartFile imagen,
+            @RequestPart(value = "video", required = false) MultipartFile video) {
+
+        try {
+            EjercicioModel ejercicio = ejercicioService.getById(id)
+                    .orElseThrow(() -> new RuntimeException("Ejercicio no encontrado"));
+
+            if (nombreEjercicio != null && !nombreEjercicio.isEmpty()) {
+                ejercicio.setNombreEjercicio(nombreEjercicio);
+            }
+
+            if (descripcionEjercicio != null && !descripcionEjercicio.isEmpty()) {
+                ejercicio.setDescripcionEjercicio(descripcionEjercicio);
+            }
+
+            MultipartFile imagenFile = (imagen != null && !imagen.isEmpty()) ? imagen : null;
+            MultipartFile videoFile = (video != null && !video.isEmpty()) ? video : null;
+
+            EjercicioModel updatedEjercicio = ejercicioService.saveEjercicio(ejercicio, imagenFile, videoFile);
+            return ResponseEntity.ok(updatedEjercicio);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al actualizar el ejercicio: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping(path = "/{id}/delete-ejercicio-by-id")
+    public String deleteEjercicioById(@PathVariable("id") Long id) {
+        boolean ok = ejercicioService.deleteEjercicio(id);
+        return ok ? "Ejercicio with id=" + id + " eliminado" : "Error";
+    }
+
+    @GetMapping("/categorias/{CategoriaId}/ejercicios")
+    public ResponseEntity<List<EjercicioModel>> getAllEjerciciosByCategoriaId(@PathVariable(value = "CategoriaId") Long categoriaId) {
+        if (!categoriaRepository.existsById(categoriaId)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        List<EjercicioModel> ejercicios = ejercicioRepository.findEjerciciosByCategoriasIdcategoria(categoriaId);
+        return new ResponseEntity<>(ejercicios, HttpStatus.OK);
+    }
+
+    @GetMapping("/{ejercicioId}/categorias")
+    public ResponseEntity<CategoriaModel> getAllCategoriasByEjercicioId(@PathVariable(value = "ejercicioId") Long ejercicioId) {
+        if (!ejercicioRepository.existsById(ejercicioId)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        CategoriaModel categorias = categoriaRepository.findCategoriasByEjerciciosIdejercicio(ejercicioId);
+        return new ResponseEntity<>(categorias, HttpStatus.OK);
+    }
+
+    @PostMapping("/Categoria/{categoriaId}/ejercicio/{ejercicioId}")
+    public ResponseEntity<EjercicioModel> addEjercicio(@PathVariable(value = "categoriaId") Long categoriaId, @PathVariable(value = "ejercicioId") Long ejercicioId, @RequestBody EjercicioModel ejercicioRequest) {
+        EjercicioModel ejercicio = categoriaRepository.findById(categoriaId).map(categoria -> {
+            if (ejercicioId != 0L) {
+                EjercicioModel _ejercicio = ejercicioRepository.findById(ejercicioId)
+                        .orElseThrow(() -> new RuntimeException("Ejercicio no encontrado"));
+                categoria.addEjercicio(_ejercicio);
+                categoriaRepository.save(categoria);
+                return _ejercicio;
+            }
+
+            categoria.addEjercicio(ejercicioRequest);
+            return ejercicioRepository.save(ejercicioRequest);
+        }).orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
+
+        return new ResponseEntity<>(ejercicio, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/Categoria/{categoriaId}/ejercicios/{ejercicioId}/delete")
+    public ResponseEntity<HttpStatus> deleteEjercicioFromCategoria(@PathVariable(value = "categoriaId") Long categoriaId, @PathVariable(value = "ejercicioId") Long ejercicioId) {
+        CategoriaModel categoria = categoriaRepository.findById(categoriaId)
+                .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
+
+        categoria.removeEjercicio(ejercicioId);
+        categoriaRepository.save(categoria);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<HttpStatus> deleteTag(@PathVariable("id") long id) {
+        ejercicioRepository.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/{id}/imagen")
+    public ResponseEntity<Resource> getImagenEjercicio(@PathVariable Long id) {
+        EjercicioModel ejercicio = ejercicioService.getById(id)
+                .orElseThrow(() -> new RuntimeException("Ejercicio no encontrado"));
+
+        String rutaImagen = ejercicio.getImagenEjercicio();
+        if (rutaImagen == null || rutaImagen.isEmpty()) {
+            throw new RuntimeException("Imagen no encontrada para el ejercicio");
+        }
+
+        Path path = Paths.get(rutaImagen);
+        Resource resource;
+        try {
+            resource = new UrlResource(path.toUri());
+        } catch (IOException e) {
+            throw new RuntimeException("Error al cargar la imagen");
+        }
+
+        if (resource.exists() && resource.isReadable()) {
+            return ResponseEntity
+                    .ok()
+                    .contentType(MediaType.IMAGE_PNG) // Ajustar según el formato de la imagen
+                    .body(resource);
+        } else {
+            throw new RuntimeException("No se pudo leer el archivo de imagen");
+        }
+    }
+
+    @GetMapping("/{id}/video")
+    public ResponseEntity<Resource> getVideoEjercicio(@PathVariable Long id) {
+        EjercicioModel ejercicio = ejercicioService.getById(id)
+                .orElseThrow(() -> new RuntimeException("Ejercicio no encontrado"));
+
+        String rutaVideo = ejercicio.getVideoEjercicio();
+        if (rutaVideo == null || rutaVideo.isEmpty()) {
+            throw new RuntimeException("Video no encontrado para el ejercicio");
+        }
+
+        Path path = Paths.get(rutaVideo);
+        Resource resource;
+        try {
+            resource = new UrlResource(path.toUri());
+        } catch (IOException e) {
+            throw new RuntimeException("Error al cargar el video");
+        }
+
+        if (resource.exists() && resource.isReadable()) {
+            return ResponseEntity
+                    .ok()
+                    .contentType(MediaType.parseMediaType("video/mp4")) // Ajustar según el formato del video
+                    .body(resource);
+        } else {
+            throw new RuntimeException("No se pudo leer el archivo de video");
         }
     }
 }

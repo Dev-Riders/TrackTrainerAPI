@@ -45,9 +45,13 @@ public class UsuarioModel {
     private AdministradorModel quienElimino;
     @Column(name = "fecha_actualizacion")
     private LocalDateTime fechaActualizacion;
+
+    @Column(name = "suscrito")
+    private boolean suscrito = false;
     @ManyToOne
     @JoinColumn(name = "quien_actualizo")
     private AdministradorModel quienActualizo;
+
     public UsuarioModel() {
     }
 
@@ -80,7 +84,7 @@ public class UsuarioModel {
             inverseJoinColumns = { @JoinColumn(name = "id_logro") })
     private Set<LogroModel> logros = new HashSet<>();
     //Fin campos
-    public UsuarioModel(Long id, String nombre, String apellido, String nickname, String correo, String contraseña, String verificationCode, boolean verified, LocalDateTime fechaCreacion, String resetCode, int intentosFallidos, boolean bloqueado, boolean eliminado, LocalDateTime fechaEliminacion, AdministradorModel quienElimino, LocalDateTime fechaActualizacion, AdministradorModel quienActualizo) {
+    public UsuarioModel(Long id, String nombre, String apellido, String nickname, String correo, String contraseña, String verificationCode, boolean verified, LocalDateTime fechaCreacion, String resetCode, int intentosFallidos, boolean bloqueado, boolean eliminado, LocalDateTime fechaEliminacion, AdministradorModel quienElimino, LocalDateTime fechaActualizacion, AdministradorModel quienActualizo, boolean suscrito) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -98,6 +102,7 @@ public class UsuarioModel {
         this.quienElimino = quienElimino;
         this.fechaActualizacion = fechaActualizacion;
         this.quienActualizo = quienActualizo;
+        this.suscrito = suscrito;
     }
     public Long getId() {
         return id;
@@ -226,6 +231,13 @@ public class UsuarioModel {
             this.logros.remove(logro);
             logro.getUsuarios().remove(this);
         }
+    }
+    public boolean isSuscrito() {
+        return suscrito;
+    }
+
+    public void setSuscrito(boolean suscrito) {
+        this.suscrito = suscrito;
     }
     //Fin funciones
 }
